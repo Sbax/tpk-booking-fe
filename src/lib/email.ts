@@ -1,7 +1,7 @@
 import { Adventure, Booking } from "@/types";
 import { Resend } from "resend";
 
-const resendEnabled = process.env.RESEND_API_KEY;
+const resendEnabled = process.env.RESEND_ENABLED;
 const baseUrl = process.env.BASE_URL;
 const resend = new Resend(process.env.RESEND_API_KEY);
 const sender = process.env.MAIL_SENDER;
