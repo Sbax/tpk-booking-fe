@@ -17,7 +17,7 @@ export async function getBookingById(
     range,
   });
 
-  const bookingRow = data.find((row: any[]) => row[0] === id);
+  const bookingRow = data.find((row: unknown[]) => row[0] === id);
 
   if (!bookingRow) {
     return null;

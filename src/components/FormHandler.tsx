@@ -141,7 +141,7 @@ export const FormHandler = ({ bookingId }: { bookingId?: Booking["id"] }) => {
                 className="flex-1 btn"
                 onClick={() => setConfirmationModalOpen(false)}
               >
-                No, annulla l'operazione
+                No, annulla l&apos;operazione
               </button>
             </div>
           </div>

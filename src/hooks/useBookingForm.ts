@@ -29,9 +29,10 @@ export const useBookingForm = () => {
 
       const result = await response.json();
       setResult(result);
-    } catch (error: any) {
+    } catch (error) {
       setError(
-        error.message || "Errore durante la creazione della prenotazione."
+        (error as Error).message ||
+          "Errore durante la creazione della prenotazione."
       );
     } finally {
       setLoading(false);
@@ -61,9 +62,10 @@ export const useBookingForm = () => {
 
       const result = await response.json();
       setResult(result);
-    } catch (error: any) {
+    } catch (error) {
       setError(
-        error.message || "Errore durante l'aggiornamento della prenotazione."
+        (error as Error).message ||
+          "Errore durante l'aggiornamento della prenotazione."
       );
     } finally {
       setLoading(false);
@@ -90,9 +92,10 @@ export const useBookingForm = () => {
 
       await response.json();
       setResult({ deleted: id });
-    } catch (error: any) {
+    } catch (error) {
       setError(
-        error.message || "Errore durante la cancellazione della prenotazione."
+        (error as Error).message ||
+          "Errore durante la cancellazione della prenotazione."
       );
     } finally {
       setLoading(false);

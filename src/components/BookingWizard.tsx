@@ -37,7 +37,6 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
         <AdventureSelector
           adventures={adventures}
           onAdventureSelect={(id) => setSelectedAdventureId(id)}
-          selectedAdventure={selectedAdventure}
         />
       ) : (
         <>
@@ -48,7 +47,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
               className="btn"
             >
               <ArrowLeftIcon className="w-6 h-6" />
-              Scegli un'altra sessione
+              Scegli un&apos;altra sessione
             </button>
           </section>
 

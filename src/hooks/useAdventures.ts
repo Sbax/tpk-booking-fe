@@ -17,8 +17,8 @@ export const useAdventures = () => {
       }
       const data = await response.json();
       setAdventures(data);
-    } catch (err: any) {
-      setError(err.message || "Errore sconosciuto");
+    } catch (error) {
+      setError((error as Error).message || "Errore sconosciuto");
     } finally {
       setLoading(false);
     }

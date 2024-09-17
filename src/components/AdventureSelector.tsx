@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 export const AdventureSelector: React.FC<{
   adventures: Adventure[];
   onAdventureSelect: (id: Adventure["id"]) => void;
-  selectedAdventure?: Adventure;
-}> = ({ adventures, onAdventureSelect, selectedAdventure }) => {
+}> = ({ adventures, onAdventureSelect }) => {
   const [filtered, setFiltered] = useState<Adventure[]>([]);
   const [timeSlot, setTimeSlot] = useState<Adventure["timeSlot"] | null>(null);
 
@@ -18,7 +17,7 @@ export const AdventureSelector: React.FC<{
     } else {
       setFiltered(adventures);
     }
-  }, [timeSlot]);
+  }, [timeSlot, adventures]);
 
   return (
     <>
