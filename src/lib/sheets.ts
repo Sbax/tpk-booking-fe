@@ -111,7 +111,7 @@ async function getRowIndexById({
   id: string;
   columnIndex?: number;
 }) {
-  return data.findIndex((row) => row[columnIndex] === id) + 1; // 1 header
+  return data.findIndex((row) => row[columnIndex] === id);
 }
 
 export async function updateRowById({

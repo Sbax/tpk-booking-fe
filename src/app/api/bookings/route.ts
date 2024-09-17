@@ -16,21 +16,23 @@ function getAvailabilityError(
 async function validateBookingData({
   adventureId,
   seats,
+  addSeats = 0,
 }: {
   adventureId: Adventure["id"];
   seats: Booking["seats"];
+  addSeats: Booking["seats"];
 }) {
   const adventures = await getAdventures();
   const foundAdventure = adventures.find((a) => a.id === adventureId);
+
+  const availabileSeats = (foundAdventure?.availableSeats || 0) + addSeats;
 
   if (!foundAdventure) {
     return { error: "Avventura non trovata", status: 400 };
   }
 
-  if (seats > foundAdventure.availableSeats) {
-    const availabilityError = getAvailabilityError(
-      foundAdventure.availableSeats
-    );
+  if (seats > availabileSeats) {
+    const availabilityError = getAvailabilityError(availabileSeats);
     return { error: availabilityError, status: 400 };
   }
 
@@ -50,7 +52,8 @@ async function handleBookingRequest(
   try {
     const { adventure, error, status } = await validateBookingData({
       adventureId: booking.adventureId,
-      seats: booking.seats,
+      seats: Number(booking.seats),
+      addSeats: Number(input.id ? booking.seats : 0),
     });
 
     if (error || !adventure) {

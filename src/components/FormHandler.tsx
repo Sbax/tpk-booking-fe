@@ -89,9 +89,7 @@ export const FormHandler = ({ bookingId }: { bookingId?: Booking["id"] }) => {
         )}
 
         <BookingWizard
-          adventures={adventures.filter(
-            ({ availableSeats }) => availableSeats !== 0
-          )}
+          adventures={adventures}
           defaultBooking={booking || undefined}
           onSubmit={handleFormSubmit}
         />

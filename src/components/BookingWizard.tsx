@@ -35,7 +35,9 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
     <section className="space-y-4">
       {!selectedAdventure ? (
         <AdventureSelector
-          adventures={adventures}
+          adventures={adventures.filter(
+            ({ availableSeats }) => availableSeats !== 0
+          )}
           onAdventureSelect={(id) => setSelectedAdventureId(id)}
         />
       ) : (

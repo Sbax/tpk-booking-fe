@@ -68,7 +68,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             required: "Il numero di posti è obbligatorio",
             min: { value: 1, message: "Devi prenotare almeno un posto" },
             max: {
-              value: availableSeats,
+              value: availableSeats || defaultBooking?.seats,
               message: "Non ci sono abbastanza posti disponibili",
             },
           }}
