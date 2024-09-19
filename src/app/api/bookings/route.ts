@@ -53,7 +53,11 @@ async function handleBookingRequest(
     const { adventure, error, status } = await validateBookingData({
       adventureId: booking.adventureId,
       seats: Number(booking.seats),
-      addSeats: Number(input.id ? booking.seats : 0),
+      addSeats: Number(
+        input.id && booking.adventureId === input.adventureId
+          ? booking.seats
+          : 0
+      ),
     });
 
     if (error || !adventure) {

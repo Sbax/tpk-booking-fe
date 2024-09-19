@@ -1,4 +1,5 @@
 "use client";
+
 import { Adventure } from "@/types";
 import { Fragment } from "react";
 

@@ -1,11 +1,14 @@
+"use client";
+
 import { AdventureCard } from "@/components/AdventureCard";
 import { Adventure } from "@/types";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export const AdventureSelector: React.FC<{
   adventures: Adventure[];
-  onAdventureSelect: (id: Adventure["id"]) => void;
-}> = ({ adventures, onAdventureSelect }) => {
+  baseUrl?: string;
+}> = ({ adventures, baseUrl = "/adventure" }) => {
   const [filtered, setFiltered] = useState<Adventure[]>([]);
   const [timeSlot, setTimeSlot] = useState<Adventure["timeSlot"] | null>(null);
 
@@ -21,7 +24,7 @@ export const AdventureSelector: React.FC<{
 
   return (
     <>
-      <section className="flex md:flex-row flex-col md:space-x-2 space-y-4 md:space-y-0">
+      <section className="flex md:flex-row flex-col md:space-x-2 space-y-4 md:space-y-0 my-4">
         <button
           onClick={() => setTimeSlot(null)}
           className={`btn ${timeSlot === null ? "" : "btn-outline"}`}
@@ -46,12 +49,9 @@ export const AdventureSelector: React.FC<{
 
       <section className="gap-8 grid grid-cols-1 md:grid-cols-2">
         {filtered.map((adventure: Adventure) => (
-          <AdventureCard
-            key={adventure.id}
-            {...adventure}
-            selectable
-            onSelect={() => onAdventureSelect(adventure.id)}
-          />
+          <Link key={adventure.id} href={`${baseUrl}/${adventure.id}`}>
+            <AdventureCard {...adventure} selectable />
+          </Link>
         ))}
       </section>
     </>

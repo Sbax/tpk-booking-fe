@@ -1,3 +1,5 @@
+"use client";
+
 import { Booking, BookingFormInputs } from "@/types";
 import { useForm } from "react-hook-form";
 

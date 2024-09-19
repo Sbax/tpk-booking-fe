@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Booking, BookingFormInputs } from "@/types";
-import { SubmitHandler } from "react-hook-form";
+import { useState } from "react";
 
 export const useBookingForm = () => {
   const [loading, setLoading] = useState(false);
@@ -102,19 +101,11 @@ export const useBookingForm = () => {
     }
   };
 
-  const handleBookingSubmit: SubmitHandler<BookingFormInputs> = async (
-    data
-  ) => {
-    if (data.id) {
-      await updateBooking(data.id, data);
-    } else {
-      await createBooking(data);
-    }
-  };
-
   return {
-    handleBookingSubmit,
+    createBooking,
+    updateBooking,
     deleteBooking,
+
     loading,
     result,
     error,
