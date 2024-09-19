@@ -45,8 +45,8 @@ export const PrivacyCheckbox: React.FC<PrivacyCheckboxProps> = ({
             </p>
             <ul className="py-2 list-disc list-inside">
               <li>
-                <strong>Finalità del trattamento:</strong> L'indirizzo email
-                verrà utilizzato esclusivamente per gestire la tua
+                <strong>Finalità del trattamento:</strong> L&apos;indirizzo
+                email verrà utilizzato esclusivamente per gestire la tua
                 prenotazione/servizio e per inviarti comunicazioni necessarie.
               </li>
               <li>
@@ -60,11 +60,11 @@ export const PrivacyCheckbox: React.FC<PrivacyCheckboxProps> = ({
                 successivamente per adempiere a eventuali obblighi legali.
               </li>
               <li>
-                <strong>Diritti dell'interessato:</strong> Hai il diritto di
-                accedere, rettificare o cancellare i tuoi dati, limitare il
+                <strong>Diritti dell&apos;interessato:</strong> Hai il diritto
+                di accedere, rettificare o cancellare i tuoi dati, limitare il
                 trattamento, opporsi e richiedere la portabilità dei dati. Puoi
                 anche revocare il consenso in qualsiasi momento, contattandoci
-                all'indirizzo email [tuo indirizzo email di contatto].
+                all&apos;indirizzo email [tuo indirizzo email di contatto].
               </li>
               <li>
                 <strong>Trasferimento dei dati:</strong> I tuoi dati non saranno
