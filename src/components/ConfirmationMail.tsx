@@ -38,7 +38,7 @@ export const ConfirmationEmail: React.FC<ConfirmationEmailProps> = ({
           <Heading>Ciao {name},</Heading>
           <Text>
             È ufficiale: hai {seats} post{seats === 1 ? "o" : "i"} prenotati per
-            l'avventura {title} al TPK!
+            l&apos;avventura {title} al TPK!
           </Text>
 
           <Text style={{ fontSize: "16px", marginBottom: "20px" }}>
