@@ -95,7 +95,7 @@ export async function PATCH(request: Request) {
 
   return handleBookingRequest(input, async ({ booking, adventure }) => {
     await updateBooking(booking);
-    await sendConfirmationEmail({ booking, adventure });
+    await sendConfirmationEmail({ booking, adventure, update: true });
   });
 }
 
