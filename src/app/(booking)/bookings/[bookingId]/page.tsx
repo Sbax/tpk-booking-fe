@@ -6,8 +6,6 @@ import { PageTitle } from "@/components/PageTitle";
 import { getAdventures } from "@/lib/adventures";
 import { getBookingById } from "@/lib/bookings";
 import { Booking } from "@/types";
-import { ArrowLeftIcon } from "@heroicons/react/16/solid";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function BookingDetails({
