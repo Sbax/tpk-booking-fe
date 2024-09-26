@@ -25,7 +25,7 @@ export const useBookingForm = () => {
 
       const response = await fetch("/api/bookings", {
         method: "POST",
-        PageTitles: {
+        headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ name, email, seats, adventureId }),
@@ -67,7 +67,7 @@ export const useBookingForm = () => {
 
       const response = await fetch(`/api/bookings`, {
         method: "PATCH",
-        PageTitles: {
+        headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ id, name, seats, adventureId }),
@@ -97,7 +97,7 @@ export const useBookingForm = () => {
     try {
       const response = await fetch(`/api/bookings`, {
         method: "DELETE",
-        PageTitles: {
+        headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ id }),
