@@ -14,12 +14,21 @@ export const useBookingForm = () => {
     setResult(null);
 
     try {
+      const { name, email, seats, adventureId } = bookingData;
+
+      const requiredFieldMissing =
+        [name, email, seats, adventureId].filter(Boolean).length === 0;
+
+      if (requiredFieldMissing) {
+        throw new Error("Errore durante l'aggiornamento della prenotazione");
+      }
+
       const response = await fetch("/api/bookings", {
         method: "POST",
-        headers: {
+        PageTitles: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(bookingData),
+        body: JSON.stringify({ name, email, seats, adventureId }),
       });
 
       if (!response.ok) {
@@ -47,12 +56,21 @@ export const useBookingForm = () => {
     setResult(null);
 
     try {
+      const { name, seats, adventureId } = bookingData;
+
+      const requiredFieldMissing =
+        [name, seats, adventureId].filter(Boolean).length === 0;
+
+      if (requiredFieldMissing) {
+        throw new Error("Errore durante l'aggiornamento della prenotazione");
+      }
+
       const response = await fetch(`/api/bookings`, {
         method: "PATCH",
-        headers: {
+        PageTitles: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, ...bookingData }),
+        body: JSON.stringify({ id, name, seats, adventureId }),
       });
 
       if (!response.ok) {
@@ -79,7 +97,7 @@ export const useBookingForm = () => {
     try {
       const response = await fetch(`/api/bookings`, {
         method: "DELETE",
-        headers: {
+        PageTitles: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ id }),

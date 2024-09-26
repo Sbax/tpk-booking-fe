@@ -5,6 +5,7 @@ import { Loader } from "@/components/Loader";
 import { PrivacyCheckbox } from "@/components/PrivacyCheckbox";
 import { useBookingForm } from "@/hooks/useBookingForm";
 import { Adventure, BookingFormInputs } from "@/types";
+import { anonymizeEmail } from "@/utils/anonymizeEmail";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,6 +22,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   selectedAdventure,
 }) => {
   const {
+    watch,
     register,
     handleSubmit,
     formState: { errors, isValid },
@@ -53,6 +55,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
   const [privacyCheckbox, setPrivacyCheckbox] = useState(false);
 
+  const editMode = Boolean(defaultBooking?.email);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto">
       <section className="space-y-4">
@@ -68,23 +72,57 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           />
         </div>
 
-        {/* Email */}
-        <div>
-          <Label htmlFor="email" text="Email" />
-          <InputField
-            id="email"
-            type="email"
-            register={register}
-            error={errors.email?.message}
-            validationRules={{
-              required: "L'email è obbligatoria",
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: "Indirizzo email non valido",
-              },
-            }}
-          />
-        </div>
+        {defaultBooking?.email && (
+          <div>
+            <Label
+              htmlFor="email"
+              text="L'indirizzo scelto durante la registrazione"
+            />
+            <InputField
+              id="email"
+              type="email"
+              disabled
+              value={anonymizeEmail(defaultBooking.email)}
+            />
+          </div>
+        )}
+
+        {!editMode && (
+          <>
+            {/* Email */}
+            <div>
+              <Label htmlFor="email" text="Email" />
+              <InputField
+                id="email"
+                type="email"
+                register={register}
+                error={errors.email?.message}
+                validationRules={{
+                  required: "L'email è obbligatoria",
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    message: "Indirizzo email non valido",
+                  },
+                }}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="confirmEmail" text="Conferma Email" />
+              <InputField
+                id="confirmEmail"
+                type="email"
+                register={register}
+                error={errors.confirmEmail?.message}
+                validationRules={{
+                  required: "La conferma dell'email è obbligatoria",
+                  validate: (value: string) =>
+                    value === watch("email") || "Le email non corrispondono",
+                }}
+              />
+            </div>
+          </>
+        )}
 
         {/* Numero di posti */}
         <div>
@@ -124,7 +162,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
         } p-2 btn w-full mt-4`}
         disabled={!privacyCheckbox || !isValid}
       >
-        Prenota!
+        {editMode ? "Modifica!" : "Prenota!"}
       </button>
 
       {loading && <Loader text="Giusto un attimo" />}
@@ -134,7 +172,10 @@ export const BookingForm: React.FC<BookingFormProps> = ({
       {result && (
         <dialog className="modal modal-open">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">Prenotazione inviata!</h3>
+            <h3 className="font-bold text-lg">
+              {editMode ? "Modifica alla prenotazione" : "Prenotazione"}{" "}
+              inviata!
+            </h3>
             <p className="py-4">
               Riceverai una mail di conferma all&apos;indirizzo indicato.
             </p>

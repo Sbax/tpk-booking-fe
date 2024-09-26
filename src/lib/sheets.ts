@@ -55,13 +55,15 @@ export async function appendDataToSheet({
   const auth = getAuth(["https://www.googleapis.com/auth/spreadsheets"]);
   const sheets = google.sheets({ version: "v4", auth });
 
+  const timestamp = new Date().toISOString();
+
   try {
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId,
       range,
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [data],
+        values: [[timestamp, ...data]],
       },
     });
 
@@ -139,13 +141,19 @@ export async function updateRowById({
       console.error("ID non trovato");
       return null;
     }
+    const currentRow = data[rowIndex];
+    const updatedData = newData.map((value, index) =>
+      value !== null ? value : currentRow[index]
+    );
+
+    const timestamp = new Date().toISOString();
 
     const updateRequest = {
       spreadsheetId,
       range: `${sheetName}!A${rowIndex + 1}`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [newData],
+        values: [[timestamp, ...updatedData]],
       },
     };
 

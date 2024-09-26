@@ -17,13 +17,13 @@ export async function getBookingById(
     range,
   });
 
-  const bookingRow = data.find((row: unknown[]) => row[0] === id);
+  const bookingRow = data.find(([, bookingId]) => bookingId === id);
 
   if (!bookingRow) {
     return null;
   }
 
-  const [bookingId, name, email, seats, adventureId] = bookingRow;
+  const [, bookingId, name, email, seats, adventureId] = bookingRow;
   return {
     id: bookingId,
     name,
@@ -50,11 +50,10 @@ export async function addBooking({
 export async function updateBooking({
   id,
   name,
-  email,
   seats,
   adventureId,
-}: Booking) {
-  const newData = [id, name, email, seats, adventureId];
+}: Omit<Booking, "email">) {
+  const newData = [id, name, null, seats, adventureId];
 
   return updateRowById({
     spreadsheetId,

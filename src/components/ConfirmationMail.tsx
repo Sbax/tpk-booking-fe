@@ -28,6 +28,7 @@ export const ConfirmationEmail: React.FC<ConfirmationEmailProps> = ({
   const { title, timeSlot } = adventure;
 
   const time = timeSlot === 1 ? "10.00 - 14.00" : "16.00 - 20.00";
+  const mail = process.env.MAIL_CONTACT;
 
   return (
     <Html>
@@ -58,6 +59,11 @@ export const ConfirmationEmail: React.FC<ConfirmationEmailProps> = ({
           <Text>
             Puoi gestire la tua prenotazione cliccando{" "}
             <Link href={`${baseUrl}/bookings/${bookingId}`}>qui</Link>.
+          </Text>
+
+          <Text>
+            Per qualsiasi dubbio, domanda, o richiesta particolare sentiti
+            liberə di contattarci a <Link href={`mailto:${mail}`}>{mail}</Link>.
           </Text>
 
           <Text>

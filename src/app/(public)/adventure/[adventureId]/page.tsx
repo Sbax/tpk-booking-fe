@@ -1,5 +1,6 @@
 import { AdventureCard } from "@/components/AdventureCard";
 import { BookingForm } from "@/components/BookingForm";
+import { DeleteBooking } from "@/components/DeleteBooking";
 import { getAdventures } from "@/lib/adventures";
 import { Adventure } from "@/types";
 import { ArrowLeftIcon } from "@heroicons/react/16/solid";

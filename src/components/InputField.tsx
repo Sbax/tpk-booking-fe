@@ -1,29 +1,29 @@
 "use client";
 
-import { Booking, BookingFormInputs } from "@/types";
+import { BookingFormInputs } from "@/types";
+import { InputHTMLAttributes } from "react";
 import { useForm } from "react-hook-form";
 
-type InputFieldProps = {
-  id: keyof Booking;
-  type: string;
-  register: ReturnType<typeof useForm<BookingFormInputs>>["register"];
+interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+  id: keyof BookingFormInputs;
+  register?: ReturnType<typeof useForm<BookingFormInputs>>["register"];
   error?: string;
-  validationRules: object;
-};
+  validationRules?: object;
+  disabled?: boolean;
+}
 
 export const InputField: React.FC<InputFieldProps> = ({
   id,
-  type,
-  register,
+  register = () => {},
   error,
   validationRules,
+  ...props
 }) => (
   <div>
     <input
-      id={id}
-      type={type}
       {...register(id, validationRules)}
       className={`input input-bordered w-full ${error ? "input-error" : ""}`}
+      {...props}
     />
     {error && <span className="mt-1 text-error text-sm">{error}</span>}{" "}
   </div>

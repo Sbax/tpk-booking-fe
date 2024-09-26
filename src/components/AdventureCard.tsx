@@ -28,8 +28,8 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
     <article
       className={
         selectable
-          ? "card bg-base-200 shadow-xl cursor-pointer opacity-80 hover:opacity-100"
-          : ""
+          ? "h-full card bg-base-200 shadow-xl cursor-pointer opacity-80 hover:opacity-100"
+          : "h-full"
       }
       onClick={() => selectable && onSelect(id)}
     >

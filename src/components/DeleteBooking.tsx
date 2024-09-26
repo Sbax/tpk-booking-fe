@@ -4,13 +4,11 @@ import { ErrorToast } from "@/components/ErrorToast";
 import { Loader } from "@/components/Loader";
 import { useBookingForm } from "@/hooks/useBookingForm";
 import { Booking } from "@/types";
-import { redirect, useParams } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import { useEffect, useState } from "react";
 
-export const DeleteBooking = () => {
-  const { bookingId } = useParams<{ bookingId: Booking["id"] }>();
-
+export const DeleteBooking = ({ bookingId }: { bookingId: Booking["id"] }) => {
   const [confirmationModalOpen, setConfirmationModalOpen] =
     useState<boolean>(false);
 
@@ -31,7 +29,7 @@ export const DeleteBooking = () => {
         className="w-full btn btn-error"
         onClick={() => setConfirmationModalOpen(true)}
       >
-        Elimina la Prenotazione
+        Elimina la prenotazione
       </button>
 
       {loading && <Loader />}
