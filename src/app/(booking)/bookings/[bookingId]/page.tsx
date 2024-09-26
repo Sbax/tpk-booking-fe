@@ -1,3 +1,4 @@
+import NotFound from "@/app/not-found";
 import { AdventureCard } from "@/components/AdventureCard";
 import { BookingForm } from "@/components/BookingForm";
 import { DeleteBooking } from "@/components/DeleteBooking";
@@ -17,7 +18,13 @@ export default async function BookingDetails({
   const { bookingId } = params;
   const booking = await getBookingById(bookingId);
 
-  if (!booking) redirect("/");
+  if (!booking)
+    return (
+      <NotFound
+        description="La prenotazione non esiste o è stata cancellata"
+        ctaLabel="Crea una nuova prenotazione"
+      />
+    );
 
   const adventures = await getAdventures();
   const selectedAdventure = adventures.find(
