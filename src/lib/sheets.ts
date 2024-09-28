@@ -107,13 +107,13 @@ async function getSheetIdByName({
 async function getRowIndexById({
   data,
   id,
-  columnIndex = 0,
+  idColumnIndex = 1,
 }: {
   data: unknown[][];
   id: string;
-  columnIndex?: number;
+  idColumnIndex?: number;
 }) {
-  return data.findIndex((row) => row[columnIndex] === id);
+  return data.findIndex((row) => row[idColumnIndex] === id);
 }
 
 export async function updateRowById({
@@ -121,13 +121,13 @@ export async function updateRowById({
   range,
   id,
   newData,
-  columnIndex = 0,
+  idColumnIndex = 1,
 }: {
   spreadsheetId: string;
   range: SheetRange;
   id: string;
   newData: unknown[];
-  columnIndex?: number;
+  idColumnIndex?: number;
 }) {
   const auth = getAuth(["https://www.googleapis.com/auth/spreadsheets"]);
   const sheets = google.sheets({ version: "v4", auth });
@@ -135,7 +135,7 @@ export async function updateRowById({
 
   try {
     const data = await getSheetData({ spreadsheetId, range });
-    const rowIndex = await getRowIndexById({ data, id, columnIndex });
+    const rowIndex = await getRowIndexById({ data, id, idColumnIndex });
 
     if (rowIndex === -1) {
       console.error("ID non trovato");
@@ -170,12 +170,12 @@ export async function deleteRowById({
   spreadsheetId,
   range,
   id,
-  columnIndex = 0,
+  idColumnIndex = 1,
 }: {
   spreadsheetId: string;
   range: SheetRange;
   id: string;
-  columnIndex?: number;
+  idColumnIndex?: number;
 }) {
   const auth = getAuth(["https://www.googleapis.com/auth/spreadsheets"]);
   const sheets = google.sheets({ version: "v4", auth });
@@ -186,7 +186,7 @@ export async function deleteRowById({
     if (!sheetId) return null;
 
     const data = await getSheetData({ spreadsheetId, range });
-    const rowIndex = await getRowIndexById({ data, id, columnIndex });
+    const rowIndex = await getRowIndexById({ data, id, idColumnIndex });
 
     if (rowIndex === -1) {
       console.error("ID non trovato");

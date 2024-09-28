@@ -9,28 +9,39 @@ import { Booking, SheetRange } from "@/types";
 const spreadsheetId = process.env.SHEET_ID as string;
 const range = process.env.SHEET_BOOKINGS_RANGE as SheetRange;
 
-export async function getBookingById(
-  id: Booking["id"]
-): Promise<Booking | null> {
-  const data = await getSheetData({
+export async function getBookings(): Promise<Booking[]> {
+  const bookingsResponse = await getSheetData({
     spreadsheetId,
     range,
   });
 
-  const bookingRow = data.find(([, bookingId]) => bookingId === id);
+  const bookingsRows = bookingsResponse ? bookingsResponse : [];
 
-  if (!bookingRow) {
+  const bookings = bookingsRows.map(
+    ([, id, name, email, seats, adventureId]) => ({
+      id,
+      name,
+      email,
+      seats: Number(seats),
+      adventureId,
+    })
+  );
+
+  return bookings;
+}
+
+export async function getBookingById(
+  id: Booking["id"]
+): Promise<Booking | null> {
+  const data = await getBookings();
+
+  const booking = data.find((booking) => booking.id === id);
+
+  if (!booking) {
     return null;
   }
 
-  const [, bookingId, name, email, seats, adventureId] = bookingRow;
-  return {
-    id: bookingId,
-    name,
-    email,
-    seats: Number(seats),
-    adventureId,
-  };
+  return booking;
 }
 
 export async function addBooking({

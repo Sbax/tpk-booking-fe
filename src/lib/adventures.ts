@@ -1,10 +1,10 @@
+import { getBookings } from "@/lib/bookings";
 import { getSheetData } from "@/lib/sheets";
 import { Adventure, SheetRange } from "@/types";
 import crypto from "crypto";
 
 const spreadsheetId = process.env.SHEET_ID as string;
 const adventureRange = process.env.SHEET_ADVENTURE_RANGE as SheetRange;
-const bookingsSheetRange = process.env.SHEET_BOOKINGS_RANGE as SheetRange;
 
 function generateAdventureId(
   title: Adventure["title"],
@@ -27,20 +27,7 @@ export async function getAdventures(): Promise<Adventure[]> {
     throw new Error("No data found");
   }
 
-  const bookingsResponse = await getSheetData({
-    spreadsheetId,
-    range: bookingsSheetRange,
-  });
-
-  const bookingsRows = bookingsResponse ? bookingsResponse : [];
-
-  const bookings = bookingsRows.map(([id, name, mail, seats, adventureId]) => ({
-    id,
-    name,
-    mail,
-    seats: Number(seats),
-    adventureId,
-  }));
+  const bookings = await getBookings();
 
   const adventures: Adventure[] = adventuresResponse
     .slice(1)
