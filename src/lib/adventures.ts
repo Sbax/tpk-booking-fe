@@ -1,22 +1,23 @@
 import { getBookings } from "@/lib/bookings";
 import { getSheetData } from "@/lib/sheets";
 import { Adventure, SheetRange } from "@/types";
-import crypto from "crypto";
 import { unstable_cache } from "next/cache";
 
 const spreadsheetId = process.env.SHEET_ID as string;
 const adventureRange = process.env.SHEET_ADVENTURE_RANGE as SheetRange;
 
-function generateAdventureId(
-  title: Adventure["title"],
-  masterName: Adventure["masterName"],
-  timeSlot: Adventure["timeSlot"]
-): Adventure["id"] {
-  const hash = crypto.createHash("sha256");
-  hash.update(`${title}-${masterName}-${timeSlot}`);
-
-  return hash.digest("hex");
-}
+type AdventureRow = [
+  Adventure["id"],
+  Adventure["timeSlot"],
+  Adventure["title"],
+  Adventure["rules"],
+  Adventure["description"],
+  Adventure["minPlayers"],
+  Adventure["maxPlayers"],
+  Adventure["tableShape"],
+  Adventure["masterName"],
+  Adventure["availableSeats"]
+];
 
 export const getAdventures = unstable_cache(
   async (): Promise<Adventure[]> => {
@@ -33,23 +34,18 @@ export const getAdventures = unstable_cache(
 
     const adventures: Adventure[] = adventuresResponse
       .slice(1)
-      .map((row: string[]) => {
+      .map((row) => {
         const [
+          id,
           timeSlot,
           title,
           rules,
           description,
           minPlayers,
           maxPlayers,
-          tableShape,
+          ,
           masterName,
-        ] = row;
-
-        const id = generateAdventureId(
-          title,
-          masterName,
-          Number(timeSlot) as Adventure["timeSlot"]
-        );
+        ] = row as AdventureRow;
 
         const booked = bookings
           .filter(({ adventureId }) => adventureId === id)
@@ -63,7 +59,6 @@ export const getAdventures = unstable_cache(
           description,
           minPlayers: Number(minPlayers),
           maxPlayers: Number(maxPlayers),
-          tableShape,
           masterName,
           availableSeats: Number(maxPlayers) - booked,
         };
@@ -75,6 +70,8 @@ export const getAdventures = unstable_cache(
           return a.timeSlot - b.timeSlot;
         }
       });
+
+    console.log({ adventures });
 
     return adventures;
   },

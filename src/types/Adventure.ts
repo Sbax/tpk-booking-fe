@@ -6,7 +6,6 @@ export type Adventure = {
   description: string;
   minPlayers: number;
   maxPlayers: number;
-  tableShape: string;
   masterName: string;
   availableSeats: number;
 };
