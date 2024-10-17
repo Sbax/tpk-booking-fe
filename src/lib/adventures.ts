@@ -14,9 +14,8 @@ type AdventureRow = [
   Adventure["description"],
   Adventure["minPlayers"],
   Adventure["maxPlayers"],
-  Adventure["tableShape"],
-  Adventure["masterName"],
-  Adventure["availableSeats"]
+  string, // table shape, unused on FE
+  Adventure["masterName"]
 ];
 
 export const getAdventures = unstable_cache(
