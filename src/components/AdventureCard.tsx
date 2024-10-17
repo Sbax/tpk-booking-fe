@@ -34,7 +34,7 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
       onClick={() => selectable && onSelect(id)}
     >
       <div className={selectable ? "card-body" : "space-y-2"}>
-        <div className="md:flex items-center md:space-x-2">
+        <div className="flex-col space-y-2">
           <div
             className={`font-bold p-2 badge ${
               timeSlot === 1 ? "badge-primary" : "badge-accent"
@@ -42,7 +42,7 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
           >
             {timeSlot === 1 ? "10.00 - 14.00" : "16.00 - 20.00"}
           </div>
-          <h2 className="card-title">{title}</h2>
+          <h2 className="flex-1 card-title">{title}</h2>
         </div>
 
         <p>
