@@ -1,18 +1,23 @@
 "use client";
 
 import { AdventureCard } from "@/components/AdventureCard";
+import { Loader } from "@/components/Loader";
+import { useAdventures } from "@/hooks/useAdventures";
 import { Adventure } from "@/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export const AdventureSelector: React.FC<{
-  adventures: Adventure[];
   baseUrl?: string;
-}> = ({ adventures, baseUrl = "/adventure" }) => {
+}> = ({ baseUrl = "/adventure" }) => {
   const [filtered, setFiltered] = useState<Adventure[]>([]);
   const [timeSlot, setTimeSlot] = useState<Adventure["timeSlot"] | null>(null);
 
+  const { data: adventures, loading, error } = useAdventures();
+
   useEffect(() => {
+    if (!adventures) return;
+
     if (timeSlot) {
       setFiltered(
         adventures.filter((adventure) => adventure.timeSlot === timeSlot)
@@ -21,6 +26,11 @@ export const AdventureSelector: React.FC<{
       setFiltered(adventures);
     }
   }, [timeSlot, adventures]);
+
+  if (loading) return <Loader />;
+
+  if (!adventures || error)
+    return <p>Qualcosa è andato storto, prova a ricaricare la pagina</p>;
 
   return (
     <>

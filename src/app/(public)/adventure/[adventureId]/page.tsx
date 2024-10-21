@@ -1,25 +1,37 @@
+"use client";
+
 import { AdventureCard } from "@/components/AdventureCard";
 import { BookingForm } from "@/components/BookingForm";
-import { getAdventures } from "@/lib/adventures";
+import { Loader } from "@/components/Loader";
+import { useAdventures } from "@/hooks/useAdventures";
 import { Adventure } from "@/types";
 import { ArrowLeftIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
+import { useMemo } from "react";
 
-export default async function AdventureSelected({
+export default function AdventureSelected({
   params,
 }: {
   params: { adventureId: Adventure["id"] };
 }) {
   const { adventureId } = params;
-  const adventures = await getAdventures();
-  const selectedAdventure = adventures.find(({ id }) => id === adventureId);
+
+  const { data: adventures, loading, error } = useAdventures();
+
+  const selectedAdventure = useMemo(() => {
+    return adventures?.find(({ id }) => id === adventureId);
+  }, [adventures, adventureId]);
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (!selectedAdventure || error) {
+    return <p>L&apos;avventura selezionata non è disponibile!</p>;
+  }
 
   return (
     <>
-      {!selectedAdventure && (
-        <p>L&apos;avventura selezionata non è disponibile!</p>
-      )}
-
       <section className="flex items-center space-x-4 my-4">
         <Link href="/">
           <button type="button" className="btn">

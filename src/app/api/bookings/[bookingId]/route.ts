@@ -4,12 +4,12 @@ import { Booking } from "@/types";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: Booking["id"] } }
+  { params }: { params: { bookingId: Booking["id"] } }
 ) {
-  const { id } = params;
+  const { bookingId } = params;
 
   try {
-    const booking = await getBookingById(id);
+    const booking = await getBookingById(bookingId);
     if (!booking) {
       return NextResponse.json(
         { error: "Prenotazione non trovata" },
