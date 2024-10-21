@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { InputField } from "./InputField";
 import { Label } from "./Label";
+import { useAdventures } from "@/hooks/useAdventures";
 
 type BookingFormProps = {
   defaultBooking?: BookingFormInputs;
@@ -33,6 +34,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
   const { availableSeats, id: adventureId } = selectedAdventure;
 
+  const { invalidateCache: invalidateAdventureCache } = useAdventures();
+
   const bookableSeats = (() => {
     if (defaultBooking && defaultBooking.adventureId === adventureId) {
       return availableSeats + defaultBooking.seats;
@@ -47,10 +50,11 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   const onSubmit = (data: BookingFormInputs) => {
     if (defaultBooking && defaultBooking.id) {
       updateBooking(defaultBooking.id, { ...data, adventureId });
-      return;
+    } else {
+      createBooking({ ...data, adventureId });
     }
 
-    createBooking({ ...data, adventureId });
+    invalidateAdventureCache();
   };
 
   const [privacyCheckbox, setPrivacyCheckbox] = useState(false);

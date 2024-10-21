@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Adventure } from "@/types";
 
-const adventureCache = new Map<string, Adventure[]>();
-const cacheKey = "adventures";
+const cacheKey = "adventures" as const;
+const adventureCache = new Map<typeof cacheKey, Adventure[]>();
 
 export const useAdventures = () => {
   const [data, setData] = useState<Adventure[] | null>(null);
@@ -36,5 +36,7 @@ export const useAdventures = () => {
     fetchAdventures();
   }, []);
 
-  return { data, loading, error };
+  const invalidateCache = () => adventureCache.delete(cacheKey);
+
+  return { data, loading, error, invalidateCache };
 };

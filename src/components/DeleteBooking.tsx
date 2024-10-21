@@ -2,6 +2,7 @@
 
 import { ErrorToast } from "@/components/ErrorToast";
 import { Loader } from "@/components/Loader";
+import { useAdventures } from "@/hooks/useAdventures";
 import { useBookingForm } from "@/hooks/useBookingForm";
 import { Booking } from "@/types";
 import { redirect } from "next/navigation";
@@ -13,6 +14,7 @@ export const DeleteBooking = ({ bookingId }: { bookingId: Booking["id"] }) => {
     useState<boolean>(false);
 
   const { loading, result, error, deleteBooking } = useBookingForm();
+  const { invalidateCache: invalidateAdventureCache } = useAdventures();
 
   useEffect(() => {
     if (result) redirect("/");
@@ -58,6 +60,7 @@ export const DeleteBooking = ({ bookingId }: { bookingId: Booking["id"] }) => {
                 onClick={() => {
                   deleteBooking(bookingId);
                   setConfirmationModalOpen(false);
+                  invalidateAdventureCache();
                 }}
               >
                 Sì, cancella la prenotazione
