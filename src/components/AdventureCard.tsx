@@ -11,6 +11,7 @@ interface AdventureCardProps extends Adventure {
 
 export const AdventureCard: React.FC<AdventureCardProps> = ({
   id,
+  tableNumber,
   title,
   rules,
   description,
@@ -18,6 +19,7 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
   maxPlayers,
   timeSlot,
   masterName,
+  age,
   availableSeats,
 
   expanded = false,
@@ -35,14 +37,21 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
     >
       <div className={selectable ? "card-body" : "space-y-2"}>
         <div className="flex-col space-y-2">
-          <div
-            className={`font-bold p-2 badge ${
-              timeSlot === 1 ? "badge-primary" : "badge-accent"
-            }`}
-          >
-            {timeSlot === 1 ? "10.00 - 14.00" : "16.00 - 20.00"}
+          <div className="flex flex-row justify-between items-center">
+            <div
+              className={`font-bold p-2 badge ${
+                timeSlot === 1 ? "badge-primary" : "badge-accent"
+              }`}
+            >
+              {timeSlot === 1 ? "10.00 - 14.00" : "16.00 - 20.00"}
+            </div>
+
+            {age && <div className="p-2.5 badge badge-outline">Età: {age}</div>}
           </div>
-          <h2 className="flex-1 card-title">{title}</h2>
+
+          <h2 className="flex-1 card-title">
+            {tableNumber} - {title}
+          </h2>
         </div>
 
         <p>

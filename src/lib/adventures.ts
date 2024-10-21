@@ -8,13 +8,15 @@ const adventureRange = process.env.SHEET_ADVENTURE_RANGE as SheetRange;
 type AdventureRow = [
   Adventure["id"],
   Adventure["timeSlot"],
+  Adventure["tableNumber"],
   Adventure["title"],
   Adventure["rules"],
   Adventure["description"],
   Adventure["minPlayers"],
   Adventure["maxPlayers"],
   string, // table shape, unused on FE
-  Adventure["masterName"]
+  Adventure["masterName"],
+  Adventure["age"]
 ];
 
 export const getAdventures = async (): Promise<Adventure[]> => {
@@ -35,6 +37,7 @@ export const getAdventures = async (): Promise<Adventure[]> => {
       const [
         id,
         timeSlot,
+        tableNumber,
         title,
         rules,
         description,
@@ -42,6 +45,7 @@ export const getAdventures = async (): Promise<Adventure[]> => {
         maxPlayers,
         ,
         masterName,
+        age,
       ] = row as AdventureRow;
 
       const booked = bookings
@@ -51,6 +55,7 @@ export const getAdventures = async (): Promise<Adventure[]> => {
       return {
         id,
         timeSlot: Number(timeSlot) as Adventure["timeSlot"],
+        tableNumber: Number(tableNumber),
         title,
         rules,
         description,
@@ -58,14 +63,19 @@ export const getAdventures = async (): Promise<Adventure[]> => {
         maxPlayers: Number(maxPlayers),
         masterName,
         availableSeats: Number(maxPlayers) - booked,
+        age,
       };
     })
     .sort((a, b) => {
-      if (a.timeSlot === b.timeSlot) {
-        return a.title.localeCompare(b.title);
-      } else {
+      if (a.timeSlot !== b.timeSlot) {
         return a.timeSlot - b.timeSlot;
       }
+
+      if (a.tableNumber !== b.tableNumber) {
+        return a.tableNumber - b.tableNumber;
+      }
+
+      return a.title.localeCompare(b.title);
     });
 
   return adventures;
