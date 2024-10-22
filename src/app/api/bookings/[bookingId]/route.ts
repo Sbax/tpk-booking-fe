@@ -17,7 +17,12 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(booking);
+    return NextResponse.json(booking, {
+      status: 200,
+      headers: new Headers({
+        "Cache-Control": "public, max-age=60, immutable",
+      }),
+    });
   } catch (error) {
     console.error("Errore nel recuperare la prenotazione:", error);
     return NextResponse.json({ error: "Errore del server" }, { status: 500 });
