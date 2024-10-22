@@ -62,6 +62,13 @@ export const ConfirmationEmail: React.FC<ConfirmationEmailProps> = ({
           </Text>
 
           <Text>
+            Quest'anno avremo anche la possibilità di pranzare e cenare assieme
+            sempre presso La Pieve di Cologno, lo stesso posto dove si svolgerà
+            la convention. Se vuoi unirti a noi puoi compilare{" "}
+            <Link href="https://forms.gle/ZRguXEYn6mUiPEMK6">questo form</Link>.
+          </Text>
+
+          <Text>
             Per qualsiasi dubbio, domanda, o richiesta particolare sentiti
             liberə di contattarci a <Link href={`mailto:${mail}`}>{mail}</Link>.
           </Text>
