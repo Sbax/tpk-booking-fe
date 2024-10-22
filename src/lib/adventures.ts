@@ -53,7 +53,7 @@ export const getAdventures = async (): Promise<Adventure[]> => {
         .reduce((total, { seats }) => total + seats, 0);
 
       return {
-        id,
+        id: id.replace(/\s+/g, ""), // sanification, removes all whitespace from ids
         timeSlot: Number(timeSlot) as Adventure["timeSlot"],
         tableNumber: Number(tableNumber),
         title,
