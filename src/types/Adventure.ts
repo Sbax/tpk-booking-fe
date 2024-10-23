@@ -3,7 +3,7 @@ export type Adventure = {
   timeSlot: 1 | 2;
   tableNumber: number;
   title: string;
-  rules: string;
+  ruleset: string;
   description: string;
   minPlayers: number;
   maxPlayers: number;

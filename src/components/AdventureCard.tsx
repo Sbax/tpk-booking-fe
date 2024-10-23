@@ -13,7 +13,7 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
   id,
   tableNumber,
   title,
-  rules,
+  ruleset,
   description,
   minPlayers,
   maxPlayers,
@@ -55,7 +55,7 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
         </div>
 
         <p>
-          <span className="italic">{rules}</span>,{" "}
+          <span className="italic">{ruleset}</span>,{" "}
           <>
             per {minPlayers} - {maxPlayers} avventurierɜ
           </>

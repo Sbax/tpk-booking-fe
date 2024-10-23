@@ -5,13 +5,13 @@ const cacheKey = "adventures" as const;
 const adventureCache = new Map<typeof cacheKey, Adventure[]>();
 
 export const useAdventures = () => {
-  const [data, setData] = useState<Adventure[] | null>(null);
+  const [data, setData] = useState<Adventure[]>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
     if (adventureCache.has(cacheKey)) {
-      setData(adventureCache.get(cacheKey) || null);
+      setData(adventureCache.get(cacheKey));
       setLoading(false);
       return;
     }
