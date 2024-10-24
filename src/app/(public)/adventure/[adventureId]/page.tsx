@@ -9,6 +9,17 @@ import { ArrowLeftIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { useMemo } from "react";
 
+const BackButton = () => (
+  <section className="flex items-center space-x-4 my-4">
+    <Link href="/">
+      <button type="button" className="btn">
+        <ArrowLeftIcon className="w-6 h-6" />
+        Scegli un&apos;altra sessione
+      </button>
+    </Link>
+  </section>
+);
+
 export default function AdventureSelected({
   params,
 }: {
@@ -32,20 +43,24 @@ export default function AdventureSelected({
 
   return (
     <>
-      <section className="flex items-center space-x-4 my-4">
-        <Link href="/">
-          <button type="button" className="btn">
-            <ArrowLeftIcon className="w-6 h-6" />
-            Scegli un&apos;altra sessione
-          </button>
-        </Link>
-      </section>
+      <BackButton />
 
       {selectedAdventure && (
         <>
           <AdventureCard {...selectedAdventure} expanded />
 
-          <BookingForm selectedAdventure={selectedAdventure} />
+          {selectedAdventure.availableSeats === 0 ? (
+            <section className="mt-4">
+              <p>
+                <strong>
+                  Questa avventura non ha altri posti disponibili!
+                </strong>
+              </p>
+              <BackButton />
+            </section>
+          ) : (
+            <BookingForm selectedAdventure={selectedAdventure} />
+          )}
         </>
       )}
     </>
