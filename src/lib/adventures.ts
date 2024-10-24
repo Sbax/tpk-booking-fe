@@ -52,6 +52,12 @@ export const getAdventures = async (): Promise<Adventure[]> => {
         .filter(({ adventureId }) => adventureId === id)
         .reduce((total, { seats }) => total + seats, 0);
 
+      const useMinSeats = process.env.USE_MIN_SEATS;
+      const availableSeats = Math.max(
+        0,
+        Number(useMinSeats ? minPlayers : maxPlayers) - booked
+      );
+
       return {
         id: id.replace(/\s+/g, ""), // sanification, removes all whitespace from ids
         timeSlot: Number(timeSlot) as Adventure["timeSlot"],
@@ -62,7 +68,7 @@ export const getAdventures = async (): Promise<Adventure[]> => {
         minPlayers: Number(minPlayers),
         maxPlayers: Number(maxPlayers),
         masterName,
-        availableSeats: Number(maxPlayers) - booked,
+        availableSeats,
         age,
       };
     })
