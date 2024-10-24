@@ -26,7 +26,8 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
   selectable = false,
   onSelect = () => {},
 }) => {
-  const useMinSeats = process.env.USE_MIN_SEATS;
+  const useMinSeats = process.env.NEXT_PUBLIC_USE_MIN_SEATS;
+  console.log({ useMinSeats });
 
   return (
     <article
