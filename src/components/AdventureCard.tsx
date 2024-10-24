@@ -26,6 +26,8 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
   selectable = false,
   onSelect = () => {},
 }) => {
+  const useMinPlayers = process.env.NEXT_PUBLIC_USE_MIN_PLAYERS;
+
   return (
     <article
       className={
@@ -56,9 +58,7 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
 
         <p>
           <span className="italic">{ruleset}</span>,{" "}
-          <>
-            per {minPlayers} - {maxPlayers} avventurierɜ
-          </>
+          <>per {useMinPlayers ? minPlayers : maxPlayers} avventurierɜ</>
         </p>
         <p className="max-w-3xl">
           {(expanded ? description : `${description.slice(0, 200).trim()}...`)
@@ -77,7 +77,7 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
           <p></p>
         </div>
         <p>
-          <strong>Posti disponibili:</strong> {availableSeats} su {maxPlayers}
+          <strong>Posti disponibili:</strong> {availableSeats}
         </p>
       </div>
     </article>
