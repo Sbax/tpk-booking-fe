@@ -52,10 +52,10 @@ export const getAdventures = async (): Promise<Adventure[]> => {
         .filter(({ adventureId }) => adventureId === id)
         .reduce((total, { seats }) => total + seats, 0);
 
-      const useMinSeats = process.env.NEXT_PUBLIC_USE_MIN_SEATS;
+      const useMinPlayers = process.env.NEXT_PUBLIC_USE_MIN_PLAYERS;
       const availableSeats = Math.max(
         0,
-        Number(useMinSeats ? minPlayers : maxPlayers) - booked
+        Number(useMinPlayers ? minPlayers : maxPlayers) - booked
       );
 
       return {
