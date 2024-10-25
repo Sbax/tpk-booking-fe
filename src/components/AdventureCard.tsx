@@ -58,7 +58,10 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
 
         <p>
           <span className="italic">{ruleset}</span>,{" "}
-          <>per {useMinPlayers ? minPlayers : maxPlayers} avventurierɜ</>
+          <>
+            per {useMinPlayers ? `almeno ${minPlayers}` : maxPlayers}{" "}
+            avventurierɜ
+          </>
         </p>
         <p className="max-w-3xl">
           {(expanded ? description : `${description.slice(0, 200).trim()}...`)
