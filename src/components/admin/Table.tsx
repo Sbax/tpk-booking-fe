@@ -62,14 +62,16 @@ export const Table: FC<{
 
             return (
               <Fragment key={session.id}>
-                <tr className="bg-slate-200">
+                <tr className="bg-base-200">
                   {fields.map((key, index) => (
                     <td
                       className="px-4"
                       key={key}
                       rowSpan={index === 0 ? 2 : 1}
                     >
-                      {session[key]}
+                      {String(session[key]).length > 50
+                        ? String(session[key]).slice(0, 50) + "..."
+                        : session[key]}
                     </td>
                   ))}
                 </tr>

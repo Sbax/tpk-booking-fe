@@ -8,8 +8,11 @@ const config: Config = {
       {
         mytheme: {
           primary: "#fcc041",
+          "primary-content": "#fffdf1",
           secondary: "#fc9141",
+          "secondary-content": "#fffdf1",
           accent: "#2ab7ca",
+          "accent-content": "#fffdf1",
 
           "base-100": "#fffdf1",
           neutral: "#281b1c",

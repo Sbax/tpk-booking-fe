@@ -17,6 +17,8 @@ type SessionRow = [
   Session["description"],
   Session["minPlayers"],
   Session["maxPlayers"],
+  Session["age"],
+  Session["kids"]
 ];
 
 export const getSessions = async (): Promise<Session[]> => {
@@ -44,15 +46,19 @@ export const getSessions = async (): Promise<Session[]> => {
         description,
         minPlayers,
         maxPlayers,
+        age,
       ] = row as SessionRow;
+
+      if (!id) return;
+      if (!Object.keys(timeSlots).includes(String(timeSlot))) return;
+
+      const kids = age === "TPKids";
 
       const booked = bookings
         .filter(({ sessionId }) => sessionId === id)
         .reduce((total, { seats }) => total + seats, 0);
 
       const availableSeats = Math.max(0, maxPlayers - booked);
-
-      if (!Object.keys(timeSlots).includes(String(timeSlot))) return;
 
       return {
         id: id.replace(/\s+/g, ""), // sanification, removes all whitespace from ids
@@ -65,6 +71,8 @@ export const getSessions = async (): Promise<Session[]> => {
         maxPlayers: Number(maxPlayers),
         masterName,
         availableSeats,
+        age: age || "18",
+        kids,
       };
     })
     .filter((item) => item !== undefined)

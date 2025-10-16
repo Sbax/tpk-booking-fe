@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export function useFilteredSessions(
   sessions?: Session[],
-  timeSlot?: Session["timeSlot"],
+  timeSlots?: Session["timeSlot"][],
   search?: string
 ) {
   const [filteredSessions, setFilteredSessions] = useState<Session[]>([]);
@@ -12,16 +12,20 @@ export function useFilteredSessions(
     if (!sessions) return;
 
     const filterByTimeSlot = (sessionTimeSlot: Session["timeSlot"]) =>
-      !timeSlot || sessionTimeSlot === timeSlot;
+      !timeSlots || !timeSlots.length || timeSlots.includes(sessionTimeSlot);
 
     const filterBySearch = ({
       title,
       description,
       ruleset,
       masterName,
-    }: Pick<Session, "title" | "description" | "ruleset" | "masterName">) =>
+      age,
+    }: Pick<
+      Session,
+      "title" | "description" | "ruleset" | "masterName" | "age"
+    >) =>
       !search ||
-      [title, description, ruleset, masterName].some((string) =>
+      [title, description, ruleset, masterName, age].some((string) =>
         string.toLowerCase().includes(search.toLowerCase())
       );
 
@@ -32,13 +36,14 @@ export function useFilteredSessions(
         ruleset,
         description,
         masterName,
+        age,
       }) =>
         filterByTimeSlot(sessionTimeSlot) &&
-        filterBySearch({ title, description, ruleset, masterName })
+        filterBySearch({ title, description, ruleset, masterName, age })
     );
 
     setFilteredSessions(filtered);
-  }, [timeSlot, search, sessions]);
+  }, [timeSlots, search, sessions]);
 
   return filteredSessions;
 }

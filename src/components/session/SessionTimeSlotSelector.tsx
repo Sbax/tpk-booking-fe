@@ -1,26 +1,26 @@
 import { TimeSlot, timeSlots } from "@/utils/timeSlots";
 import { useTranslations } from "next-intl";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 type SessionTimeSlotSelectorProps = {
-  selectTimeSlot: (timeSlot?: TimeSlot) => void;
-  selectedTimeSlot?: TimeSlot;
+  selectTimeSlots: (timeSlot: TimeSlot[]) => void;
+  selectedTimeSlots: TimeSlot[];
   exclude?: TimeSlot[];
 };
 
 export const SessionTimeSlotSelector: FC<SessionTimeSlotSelectorProps> = ({
-  selectTimeSlot,
-  selectedTimeSlot,
+  selectTimeSlots,
+  selectedTimeSlots,
   exclude,
 }) => {
   const t = useTranslations("Components.SessionTimeSlotSelector");
 
   const TimeSlotsRow: FC<{
-    selectedTimeSlots: TimeSlot[];
-  }> = ({ selectedTimeSlots }) => {
+    displayedTimeSlots: TimeSlot[];
+  }> = ({ displayedTimeSlots }) => {
     return (
       <section className="flex flex-row flex-wrap -m-2 mt-2 first:mt-0">
-        {selectedTimeSlots
+        {displayedTimeSlots
           .map((timeSlot) => ({
             timeSlot: Number(timeSlot) as TimeSlot,
             details: timeSlots[timeSlot],
@@ -34,40 +34,81 @@ export const SessionTimeSlotSelector: FC<SessionTimeSlotSelectorProps> = ({
           .map(({ timeSlot, details }) => (
             <button
               key={timeSlot}
-              onClick={() => selectTimeSlot(timeSlot)}
-              className={`m-2 flex-1 md:flex-initial btn btn-timeslot ${
+              onClick={() => selectTimeSlots([timeSlot])}
+              className={`m-2 flex-1 md:flex-initial btn btn-timeslot block md:flex ${
                 details.className
-              } ${selectedTimeSlot === timeSlot ? "" : "btn-timeslot-outline"}`}
+              } ${
+                !selectTimeSlots.length || selectedTimeSlots.includes(timeSlot)
+                  ? ""
+                  : "btn-timeslot-outline"
+              }`}
             >
-              {details.day} {details.time}
+              <span>{details.day}</span>{" "}
+              <span className="block">{details.time}</span>
             </button>
           ))}
       </section>
     );
   };
 
+  const saturdayTimeSlots = [
+    TimeSlot.DAY_1_MORNING,
+    TimeSlot.DAY_1_AFTERNOON,
+    TimeSlot.DAY_1_EVENING,
+  ];
+
+  const sundayTimeSlots = [TimeSlot.DAY_2_MORNING, TimeSlot.DAY_2_AFTERNOON];
+
+  const isSaturdaySelected = useMemo(
+    () =>
+      saturdayTimeSlots.every((timeSlot) =>
+        selectedTimeSlots.includes(timeSlot)
+      ),
+    [selectedTimeSlots]
+  );
+
+  const isSundaySelected = useMemo(
+    () =>
+      sundayTimeSlots.every((timeSlot) => selectedTimeSlots.includes(timeSlot)),
+    [selectedTimeSlots]
+  );
+
   return (
     <>
       <section className="flex md:flex-row flex-col flex-wrap -m-2">
         <button
-          onClick={() => selectTimeSlot(undefined)}
-          className={`m-2 btn ${!selectedTimeSlot ? "" : "btn-outline"}`}
+          onClick={() => selectTimeSlots([])}
+          className={`m-2 btn ${
+            !selectedTimeSlots?.length ? "" : "btn-outline"
+          }`}
         >
           {t("allTimeSlots")}
         </button>
+
+        <section className="flex">
+          <button
+            onClick={() => selectTimeSlots(saturdayTimeSlots)}
+            className={`m-2 flex-1 md:flex-initial btn btn-secondary  ${
+              isSaturdaySelected ? "" : "btn-outline"
+            }`}
+          >
+            Sabato 22 Novembre
+          </button>
+
+          <button
+            onClick={() => selectTimeSlots(sundayTimeSlots)}
+            className={`m-2 flex-1 btn btn-accent ${
+              isSundaySelected ? "" : "btn-outline"
+            }`}
+          >
+            Domenica 23 Novembre
+          </button>
+        </section>
       </section>
 
-      <TimeSlotsRow
-        selectedTimeSlots={[
-          TimeSlot.DAY_1_MORNING,
-          TimeSlot.DAY_1_AFTERNOON,
-          TimeSlot.DAY_1_EVENING,
-        ]}
-      />
+      <TimeSlotsRow displayedTimeSlots={saturdayTimeSlots} />
 
-      <TimeSlotsRow
-        selectedTimeSlots={[TimeSlot.DAY_2_MORNING, TimeSlot.DAY_2_AFTERNOON]}
-      />
+      <TimeSlotsRow displayedTimeSlots={sundayTimeSlots} />
     </>
   );
 };

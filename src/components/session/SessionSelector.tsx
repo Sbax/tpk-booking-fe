@@ -14,12 +14,12 @@ import { useTranslations } from "use-intl";
 export const SessionSelector: React.FC<{
   baseUrl?: string;
 }> = ({ baseUrl = "/session" }) => {
-  const [timeSlot, setTimeSlot] = useState<Session["timeSlot"]>();
+  const [timeSlots, setTimeSlots] = useState<Session["timeSlot"][]>([]);
   const [search, setSearch] = useState<string>("");
 
   const { data: sessions, loading, error } = useSessions();
 
-  const filtered = useFilteredSessions(sessions, timeSlot, search);
+  const filtered = useFilteredSessions(sessions, timeSlots, search);
 
   const t = useTranslations("Components.SessionSelector");
 
@@ -32,8 +32,8 @@ export const SessionSelector: React.FC<{
       <section className="flex md:flex-row flex-col flex-wrap md:justify-between -m-2 pb-4">
         <section className="m-2">
           <SessionTimeSlotSelector
-            selectTimeSlot={setTimeSlot}
-            selectedTimeSlot={timeSlot}
+            selectTimeSlots={setTimeSlots}
+            selectedTimeSlots={timeSlots}
           />
         </section>
 

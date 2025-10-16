@@ -11,4 +11,6 @@ export type Session = {
   minPlayers: number;
   maxPlayers: number;
   availableSeats: number;
+  age: string;
+  kids: boolean;
 };
