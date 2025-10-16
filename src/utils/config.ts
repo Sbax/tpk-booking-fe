@@ -20,7 +20,6 @@ export default {
   propelAuthUrl: process.env.NEXT_PUBLIC_AUTH_URL as string,
   propelApiKey: process.env.PROPELAUTH_API_KEY as string,
   propelVerifierKey: process.env.PROPELAUTH_VERIFIER_KEY as string,
-  propelIssuer: process.env.PROPELAUTH_REDIRECT_URI as string,
 
   mailContact: process.env.MAIL_CONTACT || "",
   mailSender: process.env.MAIL_SENDER as string,
