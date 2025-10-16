@@ -17,9 +17,7 @@ export default async function Admin() {
   return (
     <section className="space-y-8">
       <User />
-
       <Totals bookings={bookings} sessions={sessions} />
-
       <Table
         bookings={bookings}
         sessions={sessions}
@@ -29,6 +27,11 @@ export default async function Admin() {
         bookings={bookings}
         sessions={sessions}
         currentTimeSlot={TimeSlot.DAY_1_AFTERNOON}
+      />
+      <Table
+        bookings={bookings}
+        sessions={sessions}
+        currentTimeSlot={TimeSlot.DAY_1_EVENING}
       />
 
       <Table
@@ -40,11 +43,6 @@ export default async function Admin() {
         bookings={bookings}
         sessions={sessions}
         currentTimeSlot={TimeSlot.DAY_2_AFTERNOON}
-      />
-      <Table
-        bookings={bookings}
-        sessions={sessions}
-        currentTimeSlot={TimeSlot.DAY_2_EVENING}
       />
     </section>
   );
