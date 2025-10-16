@@ -2,7 +2,7 @@ import { SheetRange } from "@/types";
 
 export default {
   baseUrl: process.env.BASE_URL,
-  defaultLocale: process.env.DEFAULT_LOCALE || "en",
+  defaultLocale: process.env.DEFAULT_LOCALE || "it",
 
   bookingsEnabled: process.env.NEXT_PUBLIC_BOOKINGS_ENABLED === "true",
 
