@@ -8,6 +8,14 @@ type SessionTimeSlotSelectorProps = {
   exclude?: TimeSlot[];
 };
 
+const saturdayTimeSlots = [
+  TimeSlot.DAY_1_MORNING,
+  TimeSlot.DAY_1_AFTERNOON,
+  TimeSlot.DAY_1_EVENING,
+];
+
+const sundayTimeSlots = [TimeSlot.DAY_2_MORNING, TimeSlot.DAY_2_AFTERNOON];
+
 export const SessionTimeSlotSelector: FC<SessionTimeSlotSelectorProps> = ({
   selectTimeSlots,
   selectedTimeSlots,
@@ -50,14 +58,6 @@ export const SessionTimeSlotSelector: FC<SessionTimeSlotSelectorProps> = ({
       </section>
     );
   };
-
-  const saturdayTimeSlots = [
-    TimeSlot.DAY_1_MORNING,
-    TimeSlot.DAY_1_AFTERNOON,
-    TimeSlot.DAY_1_EVENING,
-  ];
-
-  const sundayTimeSlots = [TimeSlot.DAY_2_MORNING, TimeSlot.DAY_2_AFTERNOON];
 
   const isSaturdaySelected = useMemo(
     () =>
