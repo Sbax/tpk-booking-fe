@@ -1,32 +1,32 @@
 "use client";
 
-import { Adventure } from "@/types";
+import { Session } from "@/types";
+import { timeSlots } from "@/utils/timeSlots";
+import { useTranslations } from "next-intl";
 import { Fragment } from "react";
 
-interface AdventureCardProps extends Adventure {
+interface SessionCardProps extends Session {
   expanded?: boolean;
   selectable?: boolean;
-  onSelect?: (id: Adventure["id"]) => void;
+  onSelect?: (id: Session["id"]) => void;
 }
 
-export const AdventureCard: React.FC<AdventureCardProps> = ({
+export const SessionCard: React.FC<SessionCardProps> = ({
   id,
+  timeSlot,
   tableNumber,
   title,
   ruleset,
-  description,
-  minPlayers,
-  maxPlayers,
-  timeSlot,
   masterName,
-  age,
+  description,
+  maxPlayers,
   availableSeats,
 
   expanded = false,
   selectable = false,
   onSelect = () => {},
 }) => {
-  const useMinPlayers = process.env.NEXT_PUBLIC_USE_MIN_PLAYERS;
+  const t = useTranslations("Components.SessionCard");
 
   return (
     <article
@@ -39,16 +39,12 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
     >
       <div className={selectable ? "card-body" : "space-y-2"}>
         <div className="flex-col space-y-2">
-          <div className="flex flex-row justify-between items-center">
+          <div className="flex flex-row items-center space-x-2">
             <div
-              className={`font-bold p-2 badge ${
-                timeSlot === 1 ? "badge-primary" : "badge-accent"
-              }`}
+              className={`${timeSlots[timeSlot].className} font-bold p-2 badge badge-timeslot`}
             >
-              {timeSlot === 1 ? "10.00 - 14.00" : "16.00 - 20.00"}
+              {timeSlots[timeSlot].label}
             </div>
-
-            {age && <div className="p-2.5 badge badge-outline">Età: {age}</div>}
           </div>
 
           <h2 className="flex-1 card-title">
@@ -58,10 +54,7 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
 
         <p>
           <span className="italic">{ruleset}</span>,{" "}
-          <>
-            per {useMinPlayers ? `almeno ${minPlayers}` : maxPlayers}{" "}
-            avventurierɜ
-          </>
+          <>{t("maxPlayers", { maxPlayers })}</>
         </p>
         <p className="max-w-3xl">
           {(expanded ? description : `${description.slice(0, 200).trim()}...`)
@@ -75,12 +68,12 @@ export const AdventureCard: React.FC<AdventureCardProps> = ({
         </p>
         <div className="flex space-x-2">
           <p>
-            <strong>Arbitrə:</strong> {masterName}
+            <strong>{t("master")}:</strong> {masterName}
           </p>
           <p></p>
         </div>
         <p>
-          <strong>Posti disponibili:</strong> {availableSeats}
+          <strong>{t("availableSeats")}:</strong> {availableSeats}
         </p>
       </div>
     </article>

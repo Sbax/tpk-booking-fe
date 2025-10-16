@@ -1,11 +1,12 @@
 import NotFound from "@/app/not-found";
-import { AdventureCard } from "@/components/AdventureCard";
-import { BookingForm } from "@/components/BookingForm";
-import { DeleteBooking } from "@/components/DeleteBooking";
+import { BookingDeleteButton } from "@/components/booking/BookingDeleteButton";
+import { BookingForm } from "@/components/booking/BookingForm";
 import { PageTitle } from "@/components/PageTitle";
-import { getAdventures } from "@/lib/adventures";
+import { SessionCard } from "@/components/session/SessionCard";
 import { getBookingById } from "@/lib/bookings";
+import { getSessions } from "@/lib/sessions";
 import { Booking } from "@/types";
+import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 export default async function BookingDetails({
@@ -13,38 +14,35 @@ export default async function BookingDetails({
 }: {
   params: { bookingId: Booking["id"] };
 }) {
+  const t = await getTranslations({ namespace: "BookingDetails" });
+
   const { bookingId } = params;
   const booking = await getBookingById(bookingId);
 
   if (!booking)
     return (
       <NotFound
-        description="La prenotazione non esiste o è stata cancellata"
-        ctaLabel="Crea una nuova prenotazione"
+        description={t("NotFound.description")}
+        ctaLabel={t("NotFound.ctaLabel")}
       />
     );
 
-  const adventures = await getAdventures();
-  const selectedAdventure = adventures.find(
-    ({ id }) => id === booking.adventureId
-  );
+  const sessions = await getSessions();
+  const selectedSession = sessions.find(({ id }) => id === booking.sessionId);
 
-  const adventureSelectionPath = `/bookings/${bookingId}/adventure`;
-  if (!selectedAdventure) redirect(adventureSelectionPath);
+  const sessionSelectionPath = `/bookings/${bookingId}/session`;
+  if (!selectedSession) redirect(sessionSelectionPath);
 
   return (
     <>
-      <PageTitle title="Modifica la prenotazione" />
+      <PageTitle title={t("title")} />
 
-      <AdventureCard {...selectedAdventure} expanded />
+      <SessionCard {...selectedSession} expanded />
 
-      <BookingForm
-        defaultBooking={booking}
-        selectedAdventure={selectedAdventure}
-      />
+      <BookingForm defaultBooking={booking} selectedSession={selectedSession} />
 
       <section className="mt-4">
-        <DeleteBooking bookingId={booking.id} />
+        <BookingDeleteButton bookingId={booking.id} />
       </section>
     </>
   );

@@ -1,13 +1,14 @@
-export type Adventure = {
+import { TimeSlot } from "@/utils/timeSlots";
+
+export type Session = {
   id: string;
-  timeSlot: 1 | 2;
+  timeSlot: TimeSlot;
   tableNumber: number;
   title: string;
   ruleset: string;
+  masterName: string;
   description: string;
   minPlayers: number;
   maxPlayers: number;
-  masterName: string;
   availableSeats: number;
-  age: string;
 };

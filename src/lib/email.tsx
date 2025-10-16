@@ -1,38 +1,33 @@
-import { ConfirmationEmail } from "@/components/ConfirmationMail";
-import { Adventure, Booking } from "@/types";
+import { ConfirmationEmail } from "@/components/mail/ConfirmationMail";
+import { Booking, Session } from "@/types";
 import { render } from "@react-email/render";
+import { getTranslations } from "next-intl/server";
 import { Resend } from "resend";
+import config from "@/utils/config";
 
-const resendEnabled = process.env.RESEND_ENABLED;
-const resend = new Resend(process.env.RESEND_API_KEY);
-const sender = process.env.MAIL_SENDER;
+const resend = new Resend(config.resendApiKey);
 
 export async function sendConfirmationEmail({
   booking,
-  adventure,
+  session,
   update,
 }: {
   booking: Booking;
-  adventure: Adventure;
+  session: Session;
   update?: boolean;
 }) {
   const { email } = booking;
-  if (!resendEnabled) return;
+  const t = await getTranslations("email");
+  if (!config.resendEnabled) return;
 
-  const subject = update
-    ? "Conferma Modifica Prenotazione TPK! 2024"
-    : "Conferma Prenotazione TPK! 2024";
+  const subject = update ? t("subject.update") : t("subject.create");
 
   const emailHtml = await render(
-    <ConfirmationEmail
-      subject={subject}
-      booking={booking}
-      adventure={adventure}
-    />
+    <ConfirmationEmail subject={subject} booking={booking} session={session} />
   );
 
   return resend.emails.send({
-    from: sender as string,
+    from: config.mailSender,
     to: email,
     subject,
     html: emailHtml,
