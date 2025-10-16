@@ -7,9 +7,9 @@ const config: Config = {
     themes: [
       {
         mytheme: {
-          primary: "#f59e0b",
-          secondary: "#f97316",
-          accent: "#2dd4bf",
+          primary: "#fcc041",
+          secondary: "#fc9141",
+          accent: "#2ab7ca",
 
           "base-100": "#fffdf1",
           neutral: "#281b1c",
