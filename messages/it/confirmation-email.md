@@ -12,8 +12,6 @@ I dettagli da sapere:
 
 Puoi gestire la tua prenotazione cliccando [qui]({{bookingUrl}}).
 
-Quest'anno avremo anche la possibilità di pranzare e cenare assieme sempre presso La Pieve di Cologno, lo stesso posto dove si svolgerà la convention. Se vuoi unirti a noi puoi compilare [questo form](https://forms.gle/ZRguXEYn6mUiPEMK6).
-
 Per qualsiasi dubbio, domanda, o richiesta particolare sentiti liberə di contattarci a [{{mail}}](mailto:{{mail}}).
 
 Alleanza OSR Pizza  
