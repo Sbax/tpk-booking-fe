@@ -1,13 +1,19 @@
 import NotFound from "@/app/not-found";
 import { BookingDeleteButton } from "@/components/booking/BookingDeleteButton";
 import { BookingForm } from "@/components/booking/BookingForm";
+import { TermsAndConditions } from "@/components/input/TermsAndConditions";
 import { PageTitle } from "@/components/PageTitle";
 import { SessionCard } from "@/components/session/SessionCard";
 import { getBookingById } from "@/lib/bookings";
-import { getSessions } from "@/lib/sessions";
+import { getSessionById } from "@/lib/sessions";
 import { Booking } from "@/types";
+import config from "@/utils/config";
+import fs from "fs";
 import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
+import path from "path";
+
+export const dynamic = "dynamic";
 
 export default async function BookingDetails({
   params,
@@ -27,11 +33,19 @@ export default async function BookingDetails({
       />
     );
 
-  const sessions = await getSessions();
-  const selectedSession = sessions.find(({ id }) => id === booking.sessionId);
+  const selectedSession = await getSessionById(booking.sessionId);
 
   const sessionSelectionPath = `/bookings/${bookingId}/session`;
   if (!selectedSession) redirect(sessionSelectionPath);
+
+  const filePath = path.join(
+    process.cwd(),
+    "messages/",
+    config.defaultLocale,
+    "/terms-and-conditions.md"
+  );
+
+  const termsAndConditions = fs.readFileSync(filePath, "utf8");
 
   return (
     <>
@@ -39,7 +53,13 @@ export default async function BookingDetails({
 
       <SessionCard {...selectedSession} expanded />
 
-      <BookingForm defaultBooking={booking} selectedSession={selectedSession} />
+      <BookingForm
+        defaultBooking={booking}
+        selectedSession={selectedSession}
+        termsAndConditions={
+          <TermsAndConditions termsAndConditions={termsAndConditions} />
+        }
+      />
 
       <section className="mt-4">
         <BookingDeleteButton bookingId={booking.id} />

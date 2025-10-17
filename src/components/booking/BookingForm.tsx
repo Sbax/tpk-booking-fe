@@ -16,11 +16,13 @@ import { useTranslations } from "next-intl";
 type BookingFormProps = {
   defaultBooking?: BookingFormInputs;
   selectedSession: Session;
+  termsAndConditions: JSX.Element;
 };
 
 export const BookingForm: React.FC<BookingFormProps> = ({
   defaultBooking,
   selectedSession,
+  termsAndConditions,
 }) => {
   const {
     watch,
@@ -153,6 +155,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           <PrivacyCheckbox
             isChecked={privacyCheckbox}
             setIsChecked={setPrivacyCheckbox}
+            termsAndConditions={termsAndConditions}
           />
         </div>
       </section>

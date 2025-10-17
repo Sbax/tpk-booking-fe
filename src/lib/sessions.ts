@@ -90,3 +90,17 @@ export const getSessions = async (): Promise<Session[]> => {
 
   return sessions;
 };
+
+export async function getSessionById(
+  id: Session["id"]
+): Promise<Session | null> {
+  const data = await getSessions();
+
+  const session = data.find((session) => session.id === id);
+
+  if (!session) {
+    return null;
+  }
+
+  return session;
+}

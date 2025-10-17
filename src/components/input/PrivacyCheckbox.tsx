@@ -1,15 +1,16 @@
-import React, { MouseEventHandler, useState } from "react";
+import React, { MouseEventHandler, ReactElement, useState } from "react";
 import { useTranslations } from "use-intl";
-import TermsAndConditions from "./TermsAndConditions.mdx";
 
 interface PrivacyCheckboxProps {
   isChecked: boolean;
   setIsChecked: (checked: boolean) => void;
+  termsAndConditions: ReactElement;
 }
 
 export const PrivacyCheckbox: React.FC<PrivacyCheckboxProps> = ({
   isChecked,
   setIsChecked,
+  termsAndConditions,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,9 +49,7 @@ export const PrivacyCheckbox: React.FC<PrivacyCheckboxProps> = ({
       {isModalOpen && (
         <dialog className="modal modal-open">
           <div className="modal-box">
-            <div className="markdown">
-              <TermsAndConditions />
-            </div>
+            <div className="markdown">{termsAndConditions}</div>
 
             <div className="flex justify-center space-x-4 w-full">
               <button className="flex-1 btn" onClick={closeModal}>

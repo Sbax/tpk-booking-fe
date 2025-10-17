@@ -1,14 +1,17 @@
-"use client";
-
 import { BookingForm } from "@/components/booking/BookingForm";
-import { Loader } from "@/components/Loader";
+import { TermsAndConditions } from "@/components/input/TermsAndConditions";
 import { SessionCard } from "@/components/session/SessionCard";
-import { useSessions } from "@/hooks/useSessions";
+import { getSessionById } from "@/lib/sessions";
 import { Session } from "@/types";
+import config from "@/utils/config";
 import { ArrowLeftIcon } from "@heroicons/react/16/solid";
+import fs from "fs";
 import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import { useMemo } from "react";
+import path from "path";
+
+export const dynamic = "dynamic";
 
 const BackButton = () => {
   const t = useTranslations("SessionSelected");
@@ -25,28 +28,28 @@ const BackButton = () => {
   );
 };
 
-export default function SessionSelected({
+export default async function SessionSelected({
   params,
 }: {
   params: { sessionId: Session["id"] };
 }) {
-  const t = useTranslations("SessionSelected");
+  const t = await getTranslations("SessionSelected");
 
   const { sessionId } = params;
+  const selectedSession = await getSessionById(sessionId);
 
-  const { data: sessions, loading, error } = useSessions();
-
-  const selectedSession = useMemo(() => {
-    return sessions?.find(({ id }) => id === sessionId);
-  }, [sessions, sessionId]);
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (!selectedSession || error) {
+  if (!selectedSession) {
     return <p>{t("notFound")}</p>;
   }
+
+  const filePath = path.join(
+    process.cwd(),
+    "messages/",
+    config.defaultLocale,
+    "/terms-and-conditions.md"
+  );
+
+  const termsAndConditions = fs.readFileSync(filePath, "utf8");
 
   return (
     <>
@@ -64,7 +67,12 @@ export default function SessionSelected({
               <BackButton />
             </section>
           ) : (
-            <BookingForm selectedSession={selectedSession} />
+            <BookingForm
+              selectedSession={selectedSession}
+              termsAndConditions={
+                <TermsAndConditions termsAndConditions={termsAndConditions} />
+              }
+            />
           )}
         </>
       )}
