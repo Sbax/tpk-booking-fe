@@ -10,7 +10,7 @@
     "BookingDeleteButton": {
       "deleteBooking": "Elimina la prenotazione",
       "modal": {
-        "body": "Sei sicuro di voler eliminare questa prenotazione?",
+        "body": "Sei sicurə di voler eliminare questa prenotazione?",
         "no": "No",
         "title": "Stai eliminando una prenotazione",
         "yes": "Sì"
@@ -49,14 +49,13 @@
     "SessionCard": {
       "availableSeats": "Posti disponibili",
       "master": "Master",
-      "maxPlayers": "Per {maxPlayers} giocatori"
+      "maxPlayers": "per {maxPlayers} giocatorɜ"
     },
     "SessionSelector": {
       "error": "Errore inaspettato. Ricarica la pagina.",
       "search": "Cerca una sessione"
     },
     "SessionTimeSlotSelector": {
-      "allDays": "Qualsiasi giorno",
       "allTimeSlots": "Tutte le sessioni"
     },
     "loading": "Caricamento",
@@ -67,8 +66,8 @@
       "ruleset": "Regolamento",
       "masterName": "Master",
       "description": "Descrizione",
-      "minPlayers": "Minimo giocatori",
-      "maxPlayers": "Massimo giocatori",
+      "minPlayers": "Minimo giocatorɜ",
+      "maxPlayers": "Massimo giocatorɜ",
       "availableSeats": "Posti disponibili"
     },
     "Totals": {

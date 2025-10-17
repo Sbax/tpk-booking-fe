@@ -43,7 +43,7 @@ export const SessionTimeSlotSelector: FC<SessionTimeSlotSelectorProps> = ({
             <button
               key={timeSlot}
               onClick={() => selectTimeSlots([timeSlot])}
-              className={`m-2 flex-1 md:flex-initial btn btn-timeslot block md:flex ${
+              className={`m-2 flex-1 md:flex-initial btn btn-timeslot block md:flex p-0 md:px-4 ${
                 details.className
               } ${
                 !selectTimeSlots.length || selectedTimeSlots.includes(timeSlot)
@@ -88,20 +88,20 @@ export const SessionTimeSlotSelector: FC<SessionTimeSlotSelectorProps> = ({
         <section className="flex">
           <button
             onClick={() => selectTimeSlots(saturdayTimeSlots)}
-            className={`m-2 flex-1 md:flex-initial btn btn-secondary  ${
+            className={`m-2 flex-1 md:flex-initial btn btn-secondary block md:flex ${
               isSaturdaySelected ? "" : "btn-outline"
             }`}
           >
-            Sabato 22 Novembre
+            <span>Sabato</span> <span className="block">22 Novembre</span>
           </button>
 
           <button
             onClick={() => selectTimeSlots(sundayTimeSlots)}
-            className={`m-2 flex-1 btn btn-accent ${
+            className={`m-2 flex-1 btn btn-accent block md:flex ${
               isSundaySelected ? "" : "btn-outline"
             }`}
           >
-            Domenica 23 Novembre
+            <span>Domenica</span> <span className="block">23 Novembre</span>
           </button>
         </section>
       </section>
