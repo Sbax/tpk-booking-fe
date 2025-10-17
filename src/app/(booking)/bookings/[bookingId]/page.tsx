@@ -13,7 +13,7 @@ import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import path from "path";
 
-export const dynamic = "dynamic";
+export const dynamic = "force-dynamic";
 
 export default async function BookingDetails({
   params,

@@ -11,7 +11,7 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import path from "path";
 
-export const dynamic = "dynamic";
+export const dynamic = "force-dynamic";
 
 const BackButton = () => {
   const t = useTranslations("SessionSelected");
