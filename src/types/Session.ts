@@ -13,4 +13,5 @@ export type Session = {
   availableSeats: number;
   age: string;
   kids: boolean;
+  isPanel: boolean;
 };

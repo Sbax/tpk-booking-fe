@@ -20,14 +20,28 @@ export function useFilteredSessions(
       ruleset,
       masterName,
       age,
+      isPanel,
+      kids,
     }: Pick<
       Session,
-      "title" | "description" | "ruleset" | "masterName" | "age"
+      | "title"
+      | "description"
+      | "ruleset"
+      | "masterName"
+      | "age"
+      | "isPanel"
+      | "kids"
     >) =>
       !search ||
-      [title, description, ruleset, masterName, age].some((string) =>
-        string.toLowerCase().includes(search.toLowerCase())
-      );
+      [
+        title,
+        description,
+        ruleset,
+        masterName,
+        age,
+        isPanel ? "panel" : "",
+        kids ? "kids" : "",
+      ].some((string) => string.toLowerCase().includes(search.toLowerCase()));
 
     const filtered = sessions.filter(
       ({
@@ -37,9 +51,19 @@ export function useFilteredSessions(
         description,
         masterName,
         age,
+        isPanel,
+        kids,
       }) =>
         filterByTimeSlot(sessionTimeSlot) &&
-        filterBySearch({ title, description, ruleset, masterName, age })
+        filterBySearch({
+          title,
+          description,
+          ruleset,
+          masterName,
+          age,
+          isPanel,
+          kids,
+        })
     );
 
     setFilteredSessions(filtered);

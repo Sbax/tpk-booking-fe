@@ -11,7 +11,8 @@ interface SessionCardProps extends Session {
   onSelect?: (id: Session["id"]) => void;
 }
 
-const ageBadges = {
+const badges = {
+  PANEL: "bg-orange-400 text-orange-950",
   YOUNG: "bg-lime-400 text-lime-900",
   YA: "bg-amber-500 text-amber-950",
   ADULT: "badge-error",
@@ -29,6 +30,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({
   availableSeats,
   age,
   kids,
+  isPanel,
 
   expanded = false,
   selectable = false,
@@ -36,20 +38,34 @@ export const SessionCard: React.FC<SessionCardProps> = ({
 }) => {
   const t = useTranslations("Components.SessionCard");
 
-  const ageBadge = useMemo(() => {
-    if (kids) return ageBadges.YOUNG;
-    if (age === "18") return ageBadges.ADULT;
+  const badge = useMemo(() => {
+    if (isPanel) return badges.PANEL;
+    if (kids) return badges.YOUNG;
+    if (age === "18") return badges.ADULT;
 
-    return ageBadges.YA;
+    return badges.YA;
   }, [age, kids]);
+
+  const containerClassName = useMemo(() => {
+    const base = "h-full";
+
+    const selectableClassName =
+      "card bg-base-200 shadow-xl cursor-pointer opacity-80 hover:opacity-100";
+
+    const isPanelClassName = "bg-orange-200";
+
+    return [
+      base,
+      selectable && selectableClassName,
+      selectable && isPanel && isPanelClassName,
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }, [isPanel, selectable]);
 
   return (
     <article
-      className={
-        selectable
-          ? "h-full card bg-base-200 shadow-xl cursor-pointer opacity-80 hover:opacity-100"
-          : "h-full"
-      }
+      className={containerClassName}
       onClick={() => selectable && onSelect(id)}
     >
       <div className={selectable ? "card-body" : "space-y-2"}>
@@ -61,8 +77,8 @@ export const SessionCard: React.FC<SessionCardProps> = ({
               {timeSlots[timeSlot].label}
             </div>
 
-            <div className={`p-2 font-bold badge ${ageBadge}`}>
-              {kids ? "Tavolo TPKids" : `Età ${age}+`}
+            <div className={`p-2 font-bold badge ${badge}`}>
+              {isPanel ? "Panel!" : kids ? "Tavolo TPKids" : `Età ${age}+`}
             </div>
           </div>
 
@@ -71,10 +87,14 @@ export const SessionCard: React.FC<SessionCardProps> = ({
           </h2>
         </div>
 
-        <p>
-          <span className="italic">{ruleset}</span>,{" "}
-          <>{t("maxPlayers", { maxPlayers })}</>
-        </p>
+        {isPanel ? (
+          <p className="font-semibold">Un panel per {maxPlayers} persone</p>
+        ) : (
+          <p>
+            <span className="italic">{ruleset}</span>,{" "}
+            <>{t("maxPlayers", { maxPlayers })}</>
+          </p>
+        )}
         <p className="max-w-3xl">
           {(expanded ? description : `${description.slice(0, 200).trim()}...`)
             .split("\n")
@@ -87,9 +107,9 @@ export const SessionCard: React.FC<SessionCardProps> = ({
         </p>
         <div className="flex space-x-2">
           <p>
-            <strong>{t("master")}:</strong> {masterName}
+            <strong>{isPanel ? "Tenuto da " : `${t("master")}:`}</strong>{" "}
+            {masterName}
           </p>
-          <p></p>
         </div>
         <p>
           <strong>{t("availableSeats")}:</strong> {availableSeats}

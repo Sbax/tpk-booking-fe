@@ -18,7 +18,8 @@ type SessionRow = [
   Session["minPlayers"],
   Session["maxPlayers"],
   Session["age"],
-  Session["kids"]
+  Session["kids"],
+  Session["isPanel"]
 ];
 
 export const getSessions = async (): Promise<Session[]> => {
@@ -47,6 +48,7 @@ export const getSessions = async (): Promise<Session[]> => {
         minPlayers,
         maxPlayers,
         age,
+        isPanel,
       ] = row as SessionRow;
 
       if (!id) return;
@@ -73,6 +75,7 @@ export const getSessions = async (): Promise<Session[]> => {
         availableSeats,
         age: age || "18",
         kids,
+        isPanel: String(isPanel) === "TRUE",
       };
     })
     .filter((item) => item !== undefined)
