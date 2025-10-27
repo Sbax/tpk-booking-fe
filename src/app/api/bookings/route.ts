@@ -1,5 +1,10 @@
 import { getSessions } from "@/lib/sessions";
-import { addBooking, deleteBooking, updateBooking } from "@/lib/bookings";
+import {
+  addBooking,
+  deleteBooking,
+  getBookingById,
+  updateBooking,
+} from "@/lib/bookings";
 import { sendConfirmationEmail } from "@/lib/email";
 import { Session, Booking, BookingFormInputs } from "@/types";
 import { randomUUID } from "crypto";
@@ -93,7 +98,14 @@ export async function PATCH(request: Request) {
 
   return handleBookingRequest(input, async ({ booking, session }) => {
     await updateBooking(booking);
-    await sendConfirmationEmail({ booking, session, update: true });
+    const oldBooking = await getBookingById(booking.id);
+    if (!oldBooking) return;
+
+    await sendConfirmationEmail({
+      booking: { ...booking, email: oldBooking.email },
+      session,
+      update: true,
+    });
   });
 }
 
