@@ -2,21 +2,26 @@ import { Booking, Session } from "@/types";
 
 import { TimeSlot, timeSlots } from "@/utils/timeSlots";
 import { useTranslations } from "next-intl";
-import { FC, Fragment } from "react";
+import { CSSProperties, FC, Fragment } from "react";
 
-const DEFAULT_FIELDS: (keyof Session)[] = [
-  "tableNumber",
-  "title",
-  "masterName",
-  "ruleset",
-  "maxPlayers",
-];
+type Field = {
+  key: keyof Session;
+  style: CSSProperties;
+};
+
+const DEFAULT_FIELDS: Field[] = [
+  { key: "tableNumber", style: { width: "5%", textAlign: "center" } },
+  { key: "title", style: { width: "25%" } },
+  { key: "masterName", style: { width: "20%" } },
+  { key: "ruleset", style: { width: "20%" } },
+  { key: "maxPlayers", style: { width: "20%" } },
+] as const;
 
 export const Table: FC<{
   sessions: Session[];
   bookings: Booking[];
   currentTimeSlot: TimeSlot;
-  fields?: (keyof Session)[];
+  fields?: Field[];
   prefix?: string;
 }> = ({
   sessions,
@@ -32,7 +37,7 @@ export const Table: FC<{
     .join("");
 
   return (
-    <table className="table">
+    <table className="table min-w-[1000px]">
       <thead>
         <tr>
           <td colSpan={fields.length} className="text-center">
@@ -40,8 +45,10 @@ export const Table: FC<{
           </td>
         </tr>
         <tr>
-          {fields.map((key) => (
-            <th key={key}>{t(key)}</th>
+          {fields.map((field) => (
+            <th key={field.key} style={field.style}>
+              {t(field.key)}
+            </th>
           ))}
         </tr>
       </thead>
@@ -52,42 +59,64 @@ export const Table: FC<{
           .map((session) => {
             const bookingsForSession = bookings
               .filter(({ sessionId }) => sessionId === session.id)
-              .flatMap(({ name, seats }) => {
-                return Array.from(
+              .flatMap(({ name, seats }) =>
+                Array.from(
                   { length: seats },
                   (_, index) =>
                     `${name}${seats > 1 ? `(${index + 1}/${seats})` : ""}`
-                );
-              });
+                )
+              );
 
+            const bookingCols = fields.length - 1;
+            const bookingRowsRaw = Array.from(
+              { length: Math.ceil(bookingsForSession.length / bookingCols) },
+              (_, rowIndex) =>
+                bookingsForSession.slice(
+                  rowIndex * bookingCols,
+                  (rowIndex + 1) * bookingCols
+                )
+            );
+            const bookingRows =
+              bookingRowsRaw.length === 0 ? [[]] : bookingRowsRaw;
+
+            const firstCellRowSpan = bookingRows.length + 1;
             return (
               <Fragment key={session.id}>
                 <tr className="bg-base-200">
-                  {fields.map((key, index) => (
+                  {fields.map((field, index) => (
                     <td
                       className="px-4"
-                      key={key}
-                      rowSpan={index === 0 ? 2 : 1}
+                      key={field.key}
+                      rowSpan={index === 0 ? firstCellRowSpan : 1}
+                      style={field.style}
                     >
-                      {String(session[key]).length > 50
-                        ? String(session[key]).slice(0, 50) + "..."
-                        : session[key]}
+                      <span className="font-semibold">
+                        {session[field.key]}
+                      </span>
                     </td>
                   ))}
                 </tr>
 
-                <tr>
-                  <td colSpan={fields.length - 1}>
-                    <div className="flex flex-row flex-wrap min-h-[1.5em]">
-                      {bookingsForSession.map((booking, index) => (
-                        <div className="p-1" key={booking}>
-                          {booking}
-                          {index < bookingsForSession.length - 1 && ", "}
-                        </div>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
+                {bookingRows.map((row, rowIndex) => (
+                  <tr key={`${session.id}-booking-row-${rowIndex}`}>
+                    {row.map((booking) => (
+                      <td key={booking} className="px-4">
+                        {booking}
+                      </td>
+                    ))}
+                    {row.length < bookingCols &&
+                      Array.from({ length: bookingCols - row.length }).map(
+                        (_, i) => (
+                          <td
+                            key={`empty-${session.id}-${rowIndex}-${i}`}
+                            className="px-4"
+                          >
+                            &nbsp;
+                          </td>
+                        )
+                      )}
+                  </tr>
+                ))}
               </Fragment>
             );
           })}
