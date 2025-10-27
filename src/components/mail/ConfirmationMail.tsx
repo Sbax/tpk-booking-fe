@@ -20,12 +20,22 @@ interface ConfirmationEmailProps {
   session: Session;
 }
 
-function loadMarkdownTemplate(isPanel: boolean = false): string {
+function loadConfirmationEmail(): string {
   const filePath = path.join(
     process.cwd(),
     "messages/",
     config.defaultLocale,
-    isPanel ? "/confirmation-email-panel.md" : "/confirmation-email.md"
+    "/confirmation-email.md"
+  );
+  return fs.readFileSync(filePath, "utf8");
+}
+
+function loadConfirmationEmailPanel(): string {
+  const filePath = path.join(
+    process.cwd(),
+    "messages/",
+    config.defaultLocale,
+    "/confirmation-email-panel.md"
   );
   return fs.readFileSync(filePath, "utf8");
 }
@@ -46,12 +56,14 @@ export const ConfirmationEmail: React.FC<ConfirmationEmailProps> = async ({
 }) => {
   const locale = await getLocale();
   const { name, seats, id: bookingId } = booking;
-  const { title, timeSlot, isPanel } = session;
+  const { title, timeSlot } = session;
 
   const selectedTimeSlot = timeSlots[timeSlot];
   const bookingUrl = `${config.baseUrl}/bookings/${bookingId}`;
 
-  const rawMarkdown = loadMarkdownTemplate(isPanel);
+  const rawMarkdown = session.isPanel
+    ? loadConfirmationEmailPanel()
+    : loadConfirmationEmail();
   const markdownContent = interpolateMarkdown(rawMarkdown, {
     name,
     seats,

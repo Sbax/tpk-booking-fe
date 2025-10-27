@@ -66,13 +66,13 @@ export const BookingDeleteButton = ({
                   invalidateSessionCache();
                 }}
               >
-                {t("yes")}
+                {t("modal.yes")}
               </button>
               <button
                 className="flex-1 btn"
                 onClick={() => setConfirmationModalOpen(false)}
               >
-                {t("no")}
+                {t("modal.no")}
               </button>
             </div>
           </div>
