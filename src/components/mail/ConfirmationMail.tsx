@@ -55,7 +55,7 @@ export const ConfirmationEmail: React.FC<ConfirmationEmailProps> = async ({
   const markdownContent = interpolateMarkdown(rawMarkdown, {
     name,
     seats,
-    seatSuffix: seats === 1 ? "o" : "i",
+    seatSuffix: Number(seats) === 1 ? "o" : "i",
     title,
     time: selectedTimeSlot.time,
     date: selectedTimeSlot.date,

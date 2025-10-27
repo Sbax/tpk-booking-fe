@@ -1,6 +1,6 @@
 Ciao {{name}},
 
-È ufficiale: hai {{seats}} post{{seatSuffix}} prenotati per l'avventura {{title}} al TPK!
+È ufficiale: hai {{seats}} post{{seatSuffix}} prenotat{{seatSuffix}} per l'avventura {{title}} al TPK!
 
 I dettagli da sapere:
 
