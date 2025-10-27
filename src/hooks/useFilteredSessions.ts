@@ -41,7 +41,7 @@ export function useFilteredSessions(
         age,
         isPanel ? "panel" : "",
         kids ? "kids" : "",
-      ].some((string) => string.toLowerCase().includes(search.toLowerCase()));
+      ].some((string) => string?.toLowerCase().includes(search.toLowerCase()));
 
     const filtered = sessions.filter(
       ({
