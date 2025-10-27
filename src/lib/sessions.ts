@@ -73,7 +73,7 @@ export const getSessions = async (): Promise<Session[]> => {
         maxPlayers: Number(maxPlayers),
         masterName,
         availableSeats,
-        age: age || "18",
+        age,
         kids,
         isPanel: String(isPanel) === "TRUE",
       };

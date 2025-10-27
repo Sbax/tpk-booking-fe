@@ -11,7 +11,7 @@ interface SessionCardProps extends Session {
   onSelect?: (id: Session["id"]) => void;
 }
 
-const badges = {
+const badgeClasses = {
   PANEL: "bg-orange-400 text-orange-950",
   YOUNG: "bg-lime-400 text-lime-900",
   YA: "bg-amber-500 text-amber-950",
@@ -39,12 +39,25 @@ export const SessionCard: React.FC<SessionCardProps> = ({
   const t = useTranslations("Components.SessionCard");
 
   const badge = useMemo(() => {
-    if (isPanel) return badges.PANEL;
-    if (kids) return badges.YOUNG;
-    if (age === "18") return badges.ADULT;
+    if (isPanel)
+      return {
+        class: badgeClasses.PANEL,
+        label: "Panel!",
+      };
 
-    return badges.YA;
-  }, [age, kids]);
+    if (kids)
+      return {
+        class: badgeClasses.YOUNG,
+        label: "Tavolo TPKids",
+      };
+
+    if (age) {
+      return {
+        class: age === "18" ? badgeClasses.ADULT : badgeClasses.YA,
+        label: `Età ${age}+`,
+      };
+    }
+  }, [age, kids, isPanel]);
 
   const containerClassName = useMemo(() => {
     const base = "h-full";
@@ -77,9 +90,11 @@ export const SessionCard: React.FC<SessionCardProps> = ({
               {timeSlots[timeSlot].label}
             </div>
 
-            <div className={`p-2 font-bold badge ${badge}`}>
-              {isPanel ? "Panel!" : kids ? "Tavolo TPKids" : `Età ${age}+`}
-            </div>
+            {badge && (
+              <div className={`p-2 font-bold badge ${badge.class}`}>
+                {badge.label}
+              </div>
+            )}
           </div>
 
           <h2 className="flex-1 card-title">
