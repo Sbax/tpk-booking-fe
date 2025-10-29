@@ -3,5 +3,5 @@ export interface Booking {
   name: string;
   email: string;
   seats: number;
-  adventureId: string;
+  sessionId: string;
 }

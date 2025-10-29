@@ -1,22 +1,38 @@
 import { Header } from "@/components/Header";
-import type { Metadata } from "next";
-import "./globals.css";
+import "../styles/globals.css";
+import "../styles/timeslots.css";
 
-export const metadata: Metadata = {
-  title: "Prenotazioni | TPK! 2024",
-  description: "Prenotazioni per Total Party Kon 2024",
-};
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 
-export default function RootLayout({
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className="p-4 antialiased">
-        <Header />
-        {children}
+        <NextIntlClientProvider messages={messages}>
+          <Header />
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );
